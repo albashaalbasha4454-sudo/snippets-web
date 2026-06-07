@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Hawajees Remix Tool
-
-وظيفة السكربت:
-1) حذف صوت الشاعر فقط من المقاطع التي تحددها أنت.
-2) الحفاظ على الأغنية/الريمكس إذا بدأ بعد سكوت الشاعر.
-3) إضافة تسجيلك أنت فوق النغمة مع خفض الموسيقى تلقائياً أثناء الإلقاء.
-
-القاعدة الذهبية:
-لا تضع وقت الأغنية داخل --poet-ranges إذا تريد الحفاظ عليها.
-"""
-
-import argparse
-import shutil
-import subprocess
+import argparse, shutil, subprocess
 from pathlib import Path
 
+# يحذف صوت الشاعر فقط من المقاطع المحددة، ويحافظ على الأغنية خارجها.
 
-# تشغيل
+def need(cmd):
+    if shutil.which(cmd) is None:
+        raise SystemExit(f"Missing command: {cmd}")
+
+def run(cmd):
+    print('>>> ' + ' '.join(map(str, cmd)))
+    subprocess.run(cmd, check=True)
+
+def tsec(s):
+    p=[float(x) for x in s.strip().split(':')]
+    if len(p)==1: return p[0]
+    if len(p)==2: return p[0]*60
